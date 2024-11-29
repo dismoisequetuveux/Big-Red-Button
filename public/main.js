@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const testAudioButton = document.getElementById("test-audio");
     const playAudioButton = document.getElementById("play-audio");
     const volumeControl = document.getElementById("volume-control");
-    const socket = io();
+    const socket = io(https://big-red-button-pa9a.onrender.com);
 
     let currentAudio = null;
 
