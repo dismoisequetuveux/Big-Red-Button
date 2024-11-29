@@ -106,12 +106,8 @@ io.on('connection', (socket) => {
     });
 });
 
-<<<<<<< HEAD
-// Démarrer le serveur
-=======
 // Démarrer le serveur avec un port dynamique
 const PORT = process.env.PORT || 3000;
->>>>>>> 953e5447436274becba638cbe42cf550daad5585
 server.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
