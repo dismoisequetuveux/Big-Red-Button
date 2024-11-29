@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Red Button</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Big Red Button</h1>
+        <div class="button-container">
+            <button class="big-red-button" id="play-audio"></button>
+        </div>
+        <div>
+            <select id="audio-select">
+                <option value="" selected disabled>Choose a sound</option>
+            </select>
+            <button id="test-audio">Test Audio</button>
+        </div>
+        <div>
+            <label for="volume-control">Volume:</label>
+            <input type="range" id="volume-control" min="0" max="1" step="0.01" value="1">
+        </div>
+        <div id="drag-drop-area">
+            <p>Drag & drop your audio files here</p>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

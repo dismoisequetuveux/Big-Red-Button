@@ -1,0 +1,184 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #1A1A4F, #2A2A7D);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+.container {
+    text-align: center;
+}
+
+/* Title */
+.container h1 {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5em;
+    margin: 0;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+/* Big Red Button */
+.button-container {
+    margin-top: 50px;
+    position: relative;
+    top: -20px;
+}
+
+.big-red-button {
+    background: radial-gradient(circle, #ff0000 60%, #aa0000 100%);
+    border: none;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    box-shadow: 0 8px #660000, inset 0 4px #ff6666;
+    position: relative;
+    top: -10px;
+    outline: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.big-red-button:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    background: radial-gradient(circle, #ff4444 50%, #880000 90%);
+    border-radius: 50%;
+    box-shadow: inset 0 6px #ff6666;
+}
+
+.big-red-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px #660000, inset 0 2px #ff4444;
+}
+
+/* Volume Control */
+input[type="range"] {
+    margin-top: 20px;
+    width: 80%;
+    -webkit-appearance: none;
+    height: 5px;
+    background: #ddd;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    border-radius: 5px;
+}
+
+input[type="range"]:hover {
+    opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+/* Dropdown (Audio Select) */
+select#audio-select {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    background-color: white;
+    color: #333;
+    width: 80%;
+    max-width: 300px;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+select#audio-select:hover {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+select#audio-select:focus {
+    border-color: #007bff;
+    background-color: #e9ecef;
+    color: #000;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Buttons */
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #3e8e41;
+    transform: scale(1);
+}
+
+/* Drag and Drop Area */
+#drag-drop-area {
+    margin-top: 20px;
+    border: 2px dashed white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+#drag-drop-area p {
+    margin: 0;
+    color: white;
+    font-size: 16px;
+}
+
+#drag-drop-area:hover {
+    border-color: green;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.7);
+}

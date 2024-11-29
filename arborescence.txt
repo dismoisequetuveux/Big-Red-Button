@@ -1,0 +1,12 @@
+C:\Users\pavil\Desktop\projets\Big Red Button
+├── .git
+├── audio
+├── node_modules
+├── package-lock.json
+├── package.json
+├── public
+│   ├── broadcast.html
+│   ├── index.html
+│   ├── scripts.js
+│   └── styles.css
+└── server.js
