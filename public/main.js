@@ -1,16 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Chargement de l'application audio avec Cloudinary...");
+    console.log("Application Big Red Button chargée.");
 
     const dragDropArea = document.getElementById("drag-drop-area");
     const audioSelect = document.getElementById("audio-select");
     const testAudioButton = document.getElementById("test-audio");
     const playAudioButton = document.getElementById("play-audio");
     const volumeControl = document.getElementById("volume-control");
-    const socket = io("https://big-red-button-pa9a.onrender.com");
+    const socket = io(); // Connexion au serveur Socket.IO
 
     let currentAudio = null;
 
-    // Charger les fichiers audio depuis Cloudinary
+    // Charger les fichiers audio depuis le serveur
     function loadAudioFiles() {
         fetch('/audio-files')
             .then(response => response.json())
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Erreur lors du chargement des fichiers audio :", error));
     }
 
-    loadAudioFiles(); // Charger la liste des fichiers au chargement de la page
+    loadAudioFiles();
 
     // Fonction pour jouer un son localement
     function playLocalAudio(audioSrc) {
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Erreur de lecture :", error));
     }
 
-    // Tester un son sélectionné
+    // Tester un son
     testAudioButton.addEventListener("click", () => {
         const selectedAudio = audioSelect.value;
         if (selectedAudio) {
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Diffuser un son via Socket.IO
+    // Diffuser un son
     playAudioButton.addEventListener("click", () => {
         const selectedAudio = audioSelect.value;
         if (selectedAudio) {
@@ -66,11 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
     volumeControl.addEventListener("input", () => {
         if (currentAudio) {
             currentAudio.volume = volumeControl.value;
-            console.log("Volume ajusté :", volumeControl.value);
         }
     });
 
-    // Gestion du drag-and-drop pour uploader des fichiers
+    // Drag and drop pour uploader un fichier
     dragDropArea.addEventListener("dragover", (event) => {
         event.preventDefault();
         dragDropArea.style.borderColor = "green";
@@ -88,10 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (files.length > 0) {
             const audioFile = files[0];
 
-            // Validez le type de fichier avant l'upload
             const allowedFormats = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
             if (!allowedFormats.includes(audioFile.type)) {
-                alert("Format de fichier non supporté. Veuillez utiliser un fichier MP3, WAV ou OGG.");
+                alert("Format de fichier non supporté. Veuillez utiliser MP3, WAV ou OGG.");
                 return;
             }
 
@@ -115,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Recevoir et jouer un son diffusé
+    // Jouer le son diffusé via Socket.IO
     socket.on('play-audio', (audioSrc) => {
         console.log("Son reçu pour diffusion :", audioSrc);
         playLocalAudio(audioSrc);
