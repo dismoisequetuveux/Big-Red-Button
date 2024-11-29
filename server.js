@@ -8,8 +8,16 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
 
+// Configure Socket.IO avec CORS
+const io = new Server(server, {
+    cors: {
+        origin: '*', // Autorise toutes les origines
+        methods: ['GET', 'POST'] // Autorise les requêtes GET et POST
+    }
+});
+
+// Déclarez le port
 const PORT = process.env.PORT || 3000;
 
 // Configurer Cloudinary
@@ -33,25 +41,24 @@ app.get('/audio-files', async (req, res) => {
         let nextCursor = null;
 
         do {
-            // Récupérer les fichiers depuis Cloudinary
             const response = await cloudinary.api.resources({
                 type: 'upload',
-                resource_type: 'video', // Gestion des fichiers vidéo/audio
-                prefix: 'audio/', // Cherche dans le dossier "audio"
-                max_results: 100, // Limite de 100 fichiers par requête
-                next_cursor: nextCursor // Récupérer la page suivante si elle existe
+                resource_type: 'video',
+                prefix: 'audio/',
+                max_results: 100,
+                next_cursor: nextCursor
             });
 
             allResources = [...allResources, ...response.resources];
-            nextCursor = response.next_cursor; // Page suivante
+            nextCursor = response.next_cursor;
         } while (nextCursor);
 
         const audioFiles = allResources.map(file => ({
             url: file.secure_url,
-            name: path.basename(file.public_id) // Conserve le nom de fichier avec extension
+            name: path.basename(file.public_id)
         }));
 
-        res.json(audioFiles); // Retourne la liste complète des fichiers audio
+        res.json(audioFiles);
     } catch (err) {
         console.error('Erreur lors de la récupération des fichiers Cloudinary:', err);
         res.status(500).json({ error: 'Erreur lors de la récupération des fichiers audio.' });
@@ -64,7 +71,6 @@ app.post('/upload', upload.single('audioFile'), (req, res) => {
         return res.status(400).json({ error: 'Aucun fichier fourni.' });
     }
 
-    // Vérification des formats acceptés
     const allowedFormats = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
     if (!allowedFormats.includes(req.file.mimetype)) {
         return res.status(400).json({ error: 'Format de fichier non supporté. Utilisez MP3, WAV ou OGG.' });
@@ -74,11 +80,11 @@ app.post('/upload', upload.single('audioFile'), (req, res) => {
 
     const uploadStream = cloudinary.uploader.upload_stream(
         {
-            resource_type: 'video', // Fichiers audio traités comme des vidéos
+            resource_type: 'video',
             folder: 'audio',
-            use_filename: true, // Utilise le nom d'origine
-            unique_filename: false, // Pas de noms aléatoires
-            public_id: originalFilename // Nom explicite basé sur le fichier original
+            use_filename: true,
+            unique_filename: false,
+            public_id: originalFilename
         },
         (error, result) => {
             if (error) {
@@ -92,7 +98,7 @@ app.post('/upload', upload.single('audioFile'), (req, res) => {
     streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
 });
 
-// Socket.IO pour diffuser les sons
+// Gestion des connexions Socket.IO
 io.on('connection', (socket) => {
     console.log(`Utilisateur connecté : ${socket.id}`);
 
@@ -106,7 +112,7 @@ io.on('connection', (socket) => {
     });
 });
 
-// Démarrer le serveur avec un port dynamique
+// Démarrer le serveur
 server.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
