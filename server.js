@@ -107,6 +107,18 @@ io.on('connection', (socket) => {
         io.emit('play-audio', audioSrc);
     });
 
+    // Gestion du micro activé
+    socket.on('mic-activated', (data) => {
+        console.log(`Micro activé par ${socket.id}`);
+        socket.broadcast.emit('broadcast-mic-audio', data);
+    });
+
+    // Gestion du micro désactivé
+    socket.on('mic-deactivated', (data) => {
+        console.log(`Micro désactivé par ${socket.id}`);
+        socket.broadcast.emit('stop-mic-audio', data);
+    });
+
     socket.on('disconnect', () => {
         console.log(`Utilisateur déconnecté : ${socket.id}`);
     });
