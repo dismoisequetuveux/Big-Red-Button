@@ -119,3 +119,52 @@ document.addEventListener("DOMContentLoaded", () => {
         playLocalAudio(audioSrc);
     });
 });
+
+// Variables pour l'audio du micro
+let audioContext = null;
+let micStream = null;
+let micSource = null;
+let isMicStreaming = false;
+
+async function toggleMic() {
+    const button = document.getElementById('toggle-mic');
+
+    if (!isMicStreaming) {
+        try {
+            // Demande d'accès au micro
+            micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // Connecte le micro au contexte audio
+            micSource = audioContext.createMediaStreamSource(micStream);
+            micSource.connect(audioContext.destination);
+
+            // Émettre un événement Socket.IO pour indiquer que le micro est actif
+            socket.emit('mic-activated', { stream: true });
+
+            button.textContent = 'Désactiver Micro';
+            isMicStreaming = true;
+        } catch (error) {
+            console.error('Erreur lors de l\'activation du micro :', error);
+        }
+    } else {
+        // Arrête la capture du micro
+        micStream.getTracks().forEach(track => track.stop());
+        audioContext.close();
+
+        // Émettre un événement Socket.IO pour indiquer que le micro est désactivé
+        socket.emit('mic-deactivated', { stream: false });
+
+        button.textContent = 'Activer Micro';
+        isMicStreaming = false;
+    }
+}
+
+// Gestion du bouton micro
+document.getElementById('toggle-mic').addEventListener('click', toggleMic);
+
+// Réception et diffusion du son capté via Socket.IO
+socket.on('broadcast-mic-audio', () => {
+    console.log("Diffusion audio micro en cours...");
+    // Vous pouvez implémenter une fonctionnalité pour diffuser aux clients connectés
+});
